@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<project name="LS9" default="main" basedir=".">
+  <target name="clean">
+    <delete dir="bin" />
+    <delete dir="dist" />
+  </target>
+  <target name="makedir">
+    <mkdir dir="bin" />
+    <mkdir dir="dist" />
+  </target>
+  <target name="compile" depends="clean, makedir">
+    <javac srcdir="src" destdir="bin"></javac>
+  </target>
+  <target name="jar" depends="compile">
+    <jar destfile="dist/ls9.jar" basedir="bin">
+      <manifest>
+        <attribute name="Main-Class" value="tollertechnologies.ls9.Server" />
+      </manifest>
+    </jar>
+  </target>
+  <target name="main" depends="compile, jar">
+    <description>Main target</description>
+  </target>
+</project>
