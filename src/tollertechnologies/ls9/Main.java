@@ -9,6 +9,12 @@ public class Main implements Runnable {
 	LS9 ls9;
 	double[] dbl = new double[1024];
 	String recieved;
+	byte[] header = new byte[] {
+			(byte) 0xF0,0x43,0x10,0x3E,0x12,0x01
+	};
+	byte[] footer = new byte[] {
+			(byte) 0xF7
+	};
 	void initializedB() {
 		dbl[0] = -14000;
 		double dB = -13800;
@@ -103,17 +109,19 @@ public class Main implements Runnable {
 				double of = s2[1].equals("On") ? 1:0;
 				onOrOff(input,of);
 			}
+			else if(s2[1].equals("Phase")) {
+				double input = Double.parseDouble(s2[0].replaceAll("[^0-9]",""));
+				changePhase(s2[2],input);
+			}
 		}
 	}
 	void onOrOff(double input,double position) {
 		byte[] full;
-		byte[] header = new byte[] {
-			(byte) 0xF0,0x43,0x10,0x3E,0x12,0x01,0x00,0x31,0x00,0x00
+		byte[] address = new byte[] {
+			0x00,0x31,0x00,0x00
 		};
-		byte[] footer = new byte[] {
-				(byte) 0xF7
-		};
-		full = concatByte(header,byteConversion((int) (input-1)));
+		full = concatByte(header,address);
+		full = concatByte(full,byteConversion((int) (input-1)));
 		full = concatByte(full,byte2Conversion((int) position));
 		full = concatByte(full,footer);
 		System.out.println(bytesToHex(full));
@@ -128,18 +136,16 @@ public class Main implements Runnable {
 				e.printStackTrace();
 			}
 		} catch (InvalidMidiDataException e) {
-			System.out.println("Check ALL connections(MIDI software,ethernet). Something is wrong.");
+			checkCon();
 		}
 	}
 	void changeLevel(double dB,double input) {
 		byte[] full;
-		byte[] header = new byte[] {
-			(byte) 0xF0,0x43,0x10,0x3E,0x12,0x01,0x00,0x33,0x00,0x00
+		byte[] address = new byte[] {
+			0x00,0x33,0x00,0x00
 		};
-		byte[] footer = new byte[] {
-				(byte) 0xF7
-		};
-		full = concatByte(header,byteConversion((int) (input-1)));
+		full = concatByte(header,address);
+		full = concatByte(full,byteConversion((int) (input-1)));
 		full = concatByte(full,byte2Conversion((int) dB));
 		full = concatByte(full,footer);
 		System.out.println(bytesToHex(full));
@@ -154,18 +160,16 @@ public class Main implements Runnable {
 				e.printStackTrace();
 			}
 		} catch (InvalidMidiDataException e) {
-			System.out.println("Check ALL connections(MIDI software,ethernet). Something is wrong.");
+			checkCon();
 		}
 	}
 	void changePan(String direction,double amount,double input) {
 		byte[] full;
-		byte[] header = new byte[] {
-				(byte) 0xF0,0x43,0x10,0x3E,0x12,0x01,0x00,0x32,0x00,0x01
+		byte[] address = new byte[] {
+				0x00,0x32,0x00,0x01
 		};
-		byte[] footer = new byte[] {
-				(byte) 0xF7
-		};
-		full = concatByte(header,byteConversion((int) (input-1)));
+		full = concatByte(header,address);
+		full = concatByte(full,byteConversion((int) (input-1)));
 		if(direction.equals("R")) {
 			full = concatByte(full,byte2Conversion((int) amount));
 		}
@@ -188,8 +192,32 @@ public class Main implements Runnable {
 				e.printStackTrace();
 			}
 		} catch (InvalidMidiDataException e) {
-			System.out.println("Check ALL connections(MIDI software,ethernet). Something is wrong.");
+			checkCon();
 		}
+	}
+	void changePhase(String phase,double input) {
+		byte[] full;
+		byte[] address = new byte[] {
+				0x00,0x30,0x00,0x00
+		};
+		full = concatByte(header,address);
+		full = concatByte(full,byteConversion((int) (input-1)));
+		full = concatByte(full,byte2Conversion((phase.equalsIgnoreCase("inverted")) ? 1:0));
+		full = concatByte(full,footer);
+		try {
+			ls9.send(full);
+		} catch (InvalidMidiDataException e) {
+			checkCon();
+		} catch (NoLS9Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MidiUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	void checkCon() {
+		System.out.println("Check ALL connections(MIDI software,ethernet). Something is wrong.");
 	}
 	byte[] concatByte(byte[] a, byte[] b) {
 	   int aLen = a.length;
