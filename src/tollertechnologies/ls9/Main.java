@@ -127,10 +127,10 @@ public class Main implements Runnable {
 						}
 					}
 					if(i<dbl.length) {
-						changeMixLevel(i,Double.parseDouble(s2[0].replaceAll("[^0-9]", "")),Double.parseDouble(s2[1].replaceAll("[^0-9]","")));
+						changeMixLevel(i,Double.parseDouble(s2[0].replaceAll("[^0-9]", "")),Integer.parseInt(s2[1].replaceAll("[^0-9]","")));
 					}
 					else {
-						changeMixLevel(i-1,Double.parseDouble(s2[0].replaceAll("[^0-9]", "")),Double.parseDouble(s2[1].replaceAll("[^0-9]","")));
+						changeMixLevel(i-1,Double.parseDouble(s2[0].replaceAll("[^0-9]", "")),Integer.parseInt(s2[1].replaceAll("[^0-9]","")));
 					}
 				}
 			}
@@ -184,7 +184,7 @@ public class Main implements Runnable {
 			checkCon();
 		}
 	}
-	void changeMixLevel(double dB,double input,double mix) {
+	void changeMixLevel(double dB,double input,int mix) {
 		byte[] full;
 		byte[] address;
 		switch(mix) {
