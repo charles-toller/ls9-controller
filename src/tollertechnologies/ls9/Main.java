@@ -72,6 +72,14 @@ public class Main implements Runnable {
 		initializedB();
 		String s = recieved;
 		String[] s2 = s.split(" ");
+		if(s2[0].matches("Stereo")) {
+			if(s2[1].matches("Off")){
+				stereoOnOff(0);
+			}
+			else {
+				stereoOnOff(1);
+			}
+		}
 		if(s2[0].matches("Input.*")) {
 			if(s2[1].equals("@")) {
 				double dB = Double.parseDouble(s2[2]) * 100;
@@ -134,6 +142,29 @@ public class Main implements Runnable {
 					}
 				}
 			}
+		}
+	}
+	void stereoOnOff(double position) {
+		byte[] full;
+		byte[] address = new byte[] {
+			0x00,0x6B,0x00,0x00
+		};
+		full = concatByte(header,address);
+		full = concatByte(full,byteConversion(0));
+		full = concatByte(full,byte2Conversion((int) (position)));
+		full = concatByte(full,footer);
+		try {
+			try {
+				ls9.send(full);
+			} catch (NoLS9Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (MidiUnavailableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (InvalidMidiDataException e) {
+			checkCon();
 		}
 	}
 	void onOrOff(double input,double position) {
