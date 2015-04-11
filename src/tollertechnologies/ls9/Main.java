@@ -151,7 +151,7 @@ public class Main implements Runnable {
 		};
 		full = concatByte(header,address);
 		full = concatByte(full,byteConversion(0));
-		full = concatByte(full,byte2Conversion(position));
+		full = concatByte(full,byte2Conversion((int) (position)));
 		full = concatByte(full,footer);
 		try {
 			try {
