@@ -113,6 +113,27 @@ public class Main implements Runnable {
 				double input = Double.parseDouble(s2[0].replaceAll("[^0-9]",""));
 				changePhase(s2[2],input);
 			}
+			else if(s2[1].matches("Mix[0-9]+")) {
+				if(s2[2].equals("@")) {
+					double dB = Double.parseDouble(s2[3]) * 100;
+					int i = 0;
+					boolean found = false;
+					while(!found && i<dbl.length) {
+						if(dbl[i] == dB || dbl[i+1] > dB) {
+							found = true;
+						}
+						else {
+							i++;
+						}
+					}
+					if(i<dbl.length) {
+						changeMixLevel(i,Double.parseDouble(s2[0].replaceAll("[^0-9]", "")),Double.parseDouble(s2[1].replaceAll("[^0-9]","")));
+					}
+					else {
+						changeMixLevel(i-1,Double.parseDouble(s2[0].replaceAll("[^0-9]", "")),Double.parseDouble(s2[1].replaceAll("[^0-9]","")));
+					}
+				}
+			}
 		}
 	}
 	void onOrOff(double input,double position) {
@@ -144,6 +165,56 @@ public class Main implements Runnable {
 		byte[] address = new byte[] {
 			0x00,0x33,0x00,0x00
 		};
+		full = concatByte(header,address);
+		full = concatByte(full,byteConversion((int) (input-1)));
+		full = concatByte(full,byte2Conversion((int) dB));
+		full = concatByte(full,footer);
+		System.out.println(bytesToHex(full));
+		try {
+			try {
+				ls9.send(full);
+			} catch (NoLS9Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (MidiUnavailableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (InvalidMidiDataException e) {
+			checkCon();
+		}
+	}
+	void changeMixLevel(double dB,double input,double mix) {
+		byte[] full;
+		byte[] address;
+		switch(mix) {
+			case 1:
+				address = new byte[] {0x00,0x43,0x00,0x05};
+				break;
+			case 2:
+				address = new byte[] {0x00,0x43,0x00,0x08};
+				break;
+			case 3:
+				address = new byte[] {0x00,0x43,0x00,0x0B};
+				break;
+			case 4:
+				address = new byte[] {0x00,0x43,0x00,0x0E};
+				break;
+			case 5:
+				address = new byte[] {0x00,0x43,0x00,0x11};
+				break;
+			case 6:
+				address = new byte[] {0x00,0x43,0x00,0x14};
+				break;
+			case 7:
+				address = new byte[] {0x00,0x43,0x00,0x17};
+				break;
+			case 8: 
+				address = new byte[] {0x00,0x43,0x00,0x1A};
+				break;
+			default:
+				return;
+		}
 		full = concatByte(header,address);
 		full = concatByte(full,byteConversion((int) (input-1)));
 		full = concatByte(full,byte2Conversion((int) dB));
