@@ -116,6 +116,17 @@ public class Main implements Runnable {
 					}
 				}
 			}
+			else if(s2[1].equals("On") || s2[1].equals("Off")) {
+				Matcher number = Pattern.compile("[0-9]+").matcher(s2[0]);
+				number.find();
+				int bottom = Integer.parseInt(number.group());
+				number.find();
+				int top = Integer.parseInt(number.group());
+				double of = s2[1].equals("On") ? 1:0;
+				for(int j = bottom;j<=top;j++) {
+					onOrOff(j,of);
+				}
+			}
 		}
 		else if(s2[0].matches("Input[0-9]+")) {
 			if(s2[1].equals("@")) {
