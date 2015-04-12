@@ -1,6 +1,8 @@
 package tollertechnologies.ls9;
 
 import java.net.DatagramPacket;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
@@ -80,7 +82,42 @@ public class Main implements Runnable {
 				stereoOnOff(1);
 			}
 		}
-		if(s2[0].matches("Input.*")) {
+		else if(s2[0].matches("Input[0-9]+Thru[0-9]+")) {
+			if(s2[1].equals("@")) {
+				double dB = Double.parseDouble(s2[2]) * 100;
+				int i = 0;
+				boolean found = false;
+				while(!found && i<dbl.length) {
+					if(dbl[i] == dB || dbl[i+1] > dB) {
+						found = true;
+					}
+					else {
+						i++;
+					}
+				}
+				if(i<dbl.length) {
+					Matcher number = Pattern.compile("[0-9]+").matcher(s2[0]);
+					number.find();
+					int bottom = Integer.parseInt(number.group());
+					number.find();
+					int top = Integer.parseInt(number.group());
+					for(int j = bottom;j<=top;j++) {
+						changeLevel(i,j);
+					}
+				}
+				else {
+					Matcher number = Pattern.compile("[0-9]+").matcher(s2[0]);
+					number.find();
+					int bottom = Integer.parseInt(number.group());
+					number.find();
+					int top = Integer.parseInt(number.group());
+					for(int j = bottom;j<=top;j++) {
+						changeLevel(i-1,j);
+					}
+				}
+			}
+		}
+		else if(s2[0].matches("Input[0-9]+")) {
 			if(s2[1].equals("@")) {
 				double dB = Double.parseDouble(s2[2]) * 100;
 				int i = 0;
