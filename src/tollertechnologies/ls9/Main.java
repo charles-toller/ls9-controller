@@ -74,7 +74,17 @@ public class Main implements Runnable {
 		initializedB();
 		String s = recieved;
 		String[] s2 = s.split(" ");
-		if(s2[0].matches("Stereo")) {
+		if(s2[0].matches("Mix[0-9]+")) {
+			if(s2[1].matches("Att")) {
+				Matcher number = Pattern.compile("[0-9]+").matcher(s2[0]);
+				number.find();
+				int mix = Integer.parseInt(number.group());
+				System.out.println(mix);
+				System.out.println(s2[2]);
+				mixChangeAtt(mix,Integer.parseInt(s2[2]));
+			}
+		}
+		else if(s2[0].matches("Stereo")) {
 			if(s2[1].matches("Off")){
 				stereoOnOff(0);
 			}
@@ -190,6 +200,30 @@ public class Main implements Runnable {
 					}
 				}
 			}
+		}
+	}
+	void mixChangeAtt(int mix,int level) {
+		byte[] full;
+		byte[] address = new byte[] {
+			0x00,0x4F,0x00,0x01
+		};
+		full = concatByte(header,address);
+		full = concatByte(full,byteConversion(mix-1));
+		full = concatByte(full,byte2Conversion((int) (level * 10)));
+		full = concatByte(full,footer);
+		System.out.println(bytesToHex(full));
+		try {
+			try {
+				ls9.send(full);
+			} catch (NoLS9Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (MidiUnavailableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (InvalidMidiDataException e) {
+			checkCon();
 		}
 	}
 	void stereoOnOff(double position) {
