@@ -211,7 +211,7 @@ public class Main implements Runnable {
 		full = concatByte(full,byteConversion(mix-1));
 		full = concatByte(full,byte2Conversion((int) (level * 10)));
 		full = concatByte(full,footer);
-		System.out.println(bytestoHex(full));
+		System.out.println(bytesToHex(full));
 		try {
 			try {
 				ls9.send(full);
