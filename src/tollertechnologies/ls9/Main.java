@@ -77,7 +77,7 @@ public class Main implements Runnable {
 		if(s2[0].matches("Mix[0-9]+")) {
 			if(s2[1].matches("Att")) {
 				Matcher number = Pattern.compile("[0-9]+").matcher(s2[0]);
-				number.find()
+				number.find();
 				int mix = Integer.parseInt(number.group());
 				mixChangeAtt(mix,Integer.parseInt(s2[2]));
 			}
