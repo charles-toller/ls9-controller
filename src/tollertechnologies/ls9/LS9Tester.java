@@ -1,11 +1,12 @@
 package tollertechnologies.ls9;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.MidiDevice.Info;
 public class LS9Tester extends LS9 {
   boolean open = false;
   boolean closed = false;
   byte[] lastMessage;
-	LS9Tester() throws MidiUnavailableException {
+	LS9Tester(Info midiInfo) throws MidiUnavailableException {
 		
 	}
 	public void open() throws NoLS9Exception {
