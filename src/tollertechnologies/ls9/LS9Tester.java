@@ -4,7 +4,7 @@ import javax.sound.midi.MidiUnavailableException;
 public class LS9Tester extends LS9 {
   boolean open = false;
   boolean closed = false;
-  byte[] lastMessage = new byte[];
+  byte[] lastMessage;
 	LS9Tester() throws MidiUnavailableException {
 		
 	}
