@@ -19,7 +19,6 @@ public class LS9Tester extends LS9 {
 	public void send(byte[] message) throws InvalidMidiDataException, NoLS9Exception, MidiUnavailableException {
 		if(!open) {
 		  throw new NoLS9Exception();
-		  return;
 		}
 		lastMessage = message;
 	}
