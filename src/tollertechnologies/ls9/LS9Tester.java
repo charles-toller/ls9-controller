@@ -7,7 +7,7 @@ public class LS9Tester extends LS9 {
   boolean closed = false;
   byte[] lastMessage;
 	LS9Tester(Info midiInfo) throws MidiUnavailableException {
-		
+		super(true);
 	}
 	public void open() throws NoLS9Exception {
 	  open = true;
