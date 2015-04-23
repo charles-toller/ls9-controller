@@ -11,7 +11,7 @@ public class LS9 {
 	LS9(Info midiInfo) throws MidiUnavailableException {
 		realLS9 = MidiSystem.getMidiDevice(midiInfo);
 	}
-	LS9(boolean fake) throws MidiUnavilableException{
+	LS9(boolean fake) throws MidiUnavailableException{
 		
 	}
 	public void open() throws NoLS9Exception {
