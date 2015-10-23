@@ -83,6 +83,14 @@ public class Main implements Runnable {
 				System.out.println(s2[2]);
 				mixChangeAtt(mix,Integer.parseInt(s2[2]));
 			}
+			else if(s2[1].matches("@")) {
+				Matcher number = Pattern.compile("[0-9]+").matcher(s2[0]);
+				number.find();
+				int mix = Integer.parseInt(number.group());
+				System.out.println(mix);
+				System.out.println(s2[2]);
+				mixChangeLevel(mix,Integer.parseInt(s2[2]);
+			}
 		}
 		else if(s2[0].matches("Stereo")) {
 			if(s2[1].matches("Off")){
