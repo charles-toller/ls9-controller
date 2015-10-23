@@ -210,6 +210,30 @@ public class Main implements Runnable {
 			}
 		}
 	}
+	void mixChangeLevel(int mix,double level) {
+		byte[] full;
+		byte[] address = new byte[] {
+			0x00,0x4E,0x00,0x00
+		}
+		full = concatByte(header,address);
+		full = concatByte(full,byteConversion(mix-1));
+		full = concatByte(full,byteConversion((int) level));
+		full = concatByte(full,byteConversion(full,footer));
+		System.out.println(bytesToHex(full));
+		try {
+			try {
+				ls9.send(full);
+			} catch (NoLS9Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (MidiUnavailableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (InvalidMidiDataException e) {
+			checkCon();
+		}
+	}
 	void mixChangeAtt(int mix,int level) {
 		byte[] full;
 		byte[] address = new byte[] {
@@ -330,7 +354,7 @@ public class Main implements Runnable {
 			case 7:
 				address = new byte[] {0x00,0x43,0x00,0x17};
 				break;
-			case 8: 
+			case 8:
 				address = new byte[] {0x00,0x43,0x00,0x1A};
 				break;
 			default:
