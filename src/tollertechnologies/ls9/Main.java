@@ -217,8 +217,8 @@ public class Main implements Runnable {
 		};
 		full = concatByte(header,address);
 		full = concatByte(full,byteConversion(mix-1));
-		full = concatByte(full,byteConversion((int) level));
-		full = concatByte(full,byteConversion(full,footer));
+		full = concatByte(full,byte2Conversion((int) level));
+		full = concatByte(full,footer);
 		System.out.println(bytesToHex(full));
 		try {
 			try {
