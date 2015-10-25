@@ -89,7 +89,7 @@ public class Main implements Runnable {
 				int mix = Integer.parseInt(number.group());
 				System.out.println(mix);
 				System.out.println(s2[2]);
-				mixChangeLevel(mix,Integer.parseInt(s2[2]);
+				mixChangeLevel(mix,Integer.parseInt(s2[2]));
 			}
 		}
 		else if(s2[0].matches("Stereo")) {
