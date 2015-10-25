@@ -214,7 +214,7 @@ public class Main implements Runnable {
 		byte[] full;
 		byte[] address = new byte[] {
 			0x00,0x4E,0x00,0x00
-		}
+		};
 		full = concatByte(header,address);
 		full = concatByte(full,byteConversion(mix-1));
 		full = concatByte(full,byteConversion((int) level));
