@@ -21,4 +21,7 @@
   <target name="main" depends="compile, jar">
     <description>Main target</description>
   </target>
+  <target name="test" depends="main">
+    <description>Required for TravisCI</description>
+  </target>
 </project>
